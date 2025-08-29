@@ -36,7 +36,7 @@ def extract(url, table_attribs):
     for row in rows:
         col = row.find_all('td')
         if col:  
-            name = col[1].a.get_text(strip=True) if col[1].find('a') else col[1].get_text(strip=True)
+            name = col[1].find_all('a')[-1].get_text(strip=True)
             mc_raw = col[2].get_text(strip=True)
             if any(ch.isdigit() for ch in mc_raw):
                 df = pd.concat(
