@@ -10,7 +10,7 @@ import numpy as np
 
 # Initializing values 
 url = 'https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks'
-table_attribs = "['Name','MC_USD_Billion']"
+table_attribs = ['Name','MC_USD_Billion']
 csv_path = './Largest_banks_data.csv'
 db_name = 'Banks.db'
 table_name = 'Largest_banks'
@@ -32,7 +32,7 @@ def extract(url, table_attribs):
     data = BeautifulSoup(page, 'html.parser')
     df = pd.DataFrame(columns = table_attribs)
     tables = data.find_all('tbody')
-    row = table[0].find_all('tr')
+    rows = tables[0].find_all('tr')
     for row in rows:
         col = row.find_all('td')
         if col:  
@@ -76,7 +76,10 @@ def run_query(query_statement, sql_connection):
 functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
 
+
+df = extract(url, table_attribs)
 log_progress('Data extraction complete, Initiating Transformation process.')
+print(df)
 log_progress('Data transformation complete. Initiating Loading process.')
 log_progress('Data saved to CSV file.')
 log_progress('SQL Connection initiated.')
