@@ -9,7 +9,7 @@ import pandas as pd
 import numpy as np
 
 # Initializing values 
-url = 'https://web.archive.org/web/20230908091635 /https://en.wikipedia.org/wiki/List_of_largest_banks'
+url = 'https://web.archive.org/web/20230908091635/https://en.wikipedia.org/wiki/List_of_largest_banks'
 table_attribs = "['Name','MC_USD_Billion']"
 csv_path = './Largest_banks_data.csv'
 db_name = 'Banks.db'
@@ -28,6 +28,24 @@ def log_progress(message):
 log_progress('Preliminaries complete. Initiating ETL process.')
     
 def extract(url, table_attribs):
+    page = requests.get(url).text
+    data = BeautifulSoup(page, 'html.parser')
+    df = pd.DataFrame(columns = table_attribs)
+    tables = data.find_all('tbody')
+    row = table[0].find_all('tr')
+    for row in rows:
+        col = row.find_all('td')
+        if col:  
+            name = col[1].a.get_text(strip=True) if col[1].find('a') else col[1].get_text(strip=True)
+            mc_raw = col[2].get_text(strip=True)
+            if any(ch.isdigit() for ch in mc_raw):
+                df = pd.concat(
+                    [df, pd.DataFrame({"Name": [name], "MC_USD_Billion": [mc_raw]})],
+                    ignore_index=True
+                )
+    return df
+
+
     ''' This function aims to extract the required
     information from the website and save it to a data frame. The
     function returns the data frame for further processing. '''
