@@ -8,6 +8,14 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
+# Initializing values 
+url = 'https://web.archive.org/web/20230908091635 /https://en.wikipedia.org/wiki/List_of_largest_banks'
+table_attribs = "['Name','MC_USD_Billion']"
+csv_path = './Largest_banks_data.csv'
+db_name = 'Banks.db'
+table_name = 'Largest_banks'
+log_file = './code_log.txt'
+
 def log_progress(message):
     ''' This function logs the mentioned message of a given stage of the
     code execution to a log file. Function returns nothing'''
@@ -16,6 +24,8 @@ def log_progress(message):
     timestamp = now.strftime(timestamp_format)
     with open(log_file,"a") as f:
         f.write(timestamp+":"+message+"\n")
+
+log_progress('Preliminaries complete. Initiating ETL process.')
     
 def extract(url, table_attribs):
     ''' This function aims to extract the required
@@ -47,11 +57,3 @@ def run_query(query_statement, sql_connection):
 ''' Here, you define the required entities and call the relevant
 functions in the correct order to complete the project. Note that this
 portion is not inside any function.'''
-
-# Initializing values 
-url = 'https://web.archive.org/web/20230908091635 /https://en.wikipedia.org/wiki/List_of_largest_banks'
-table_attribs = "['Name','MC_USD_Billion']"
-csv_path = './Largest_banks_data.csv'
-db_name = 'Banks.db'
-table_name = 'Largest_banks'
-log_file = './code_log.txt'
