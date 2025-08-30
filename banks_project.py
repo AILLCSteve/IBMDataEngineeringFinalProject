@@ -28,6 +28,9 @@ def log_progress(message):
 log_progress('Preliminaries complete. Initiating ETL process.')
     
 def extract(url, table_attribs):
+        ''' This function aims to extract the required
+    information from the website and save it to a data frame. The
+    function returns the data frame for further processing. '''
     page = requests.get(url).text
     data = BeautifulSoup(page, 'html.parser')
     df = pd.DataFrame(columns = table_attribs)
@@ -43,12 +46,6 @@ def extract(url, table_attribs):
                     [df, pd.DataFrame({"Name": [name], "MC_USD_Billion": [mc_raw]})],
                     ignore_index=True
                 )
-    return df
-
-
-    ''' This function aims to extract the required
-    information from the website and save it to a data frame. The
-    function returns the data frame for further processing. '''
 
     return df
 
@@ -79,7 +76,7 @@ portion is not inside any function.'''
 
 df = extract(url, table_attribs)
 log_progress('Data extraction complete, Initiating Transformation process.')
-print(df)
+
 log_progress('Data transformation complete. Initiating Loading process.')
 log_progress('Data saved to CSV file.')
 log_progress('SQL Connection initiated.')
